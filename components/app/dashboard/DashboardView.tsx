@@ -2,7 +2,6 @@
 
 import { formatDistanceToNow } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -35,22 +34,6 @@ export function DashboardView() {
   if (isLoading) {
     return <DashboardLoader />;
   }
-
-  // Format status label
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "created":
-        return <Badge variant="outline">Not Started</Badge>;
-      case "in_progress":
-        return <Badge variant="secondary">In Progress</Badge>;
-      case "completed":
-        return <Badge variant="default">Completed</Badge>;
-      case "cancelled":
-        return <Badge variant="destructive">Cancelled</Badge>;
-      default:
-        return <Badge variant="outline">{status}</Badge>;
-    }
-  };
 
   // Format date
   const formatDate = (date: Date) => {
@@ -201,18 +184,6 @@ export function DashboardView() {
                           )}
                           <span>{formatDate(activity.date)}</span>
                         </div>
-                      </div>
-                      <div>
-                        {activity.type === "interview" ? (
-                          getStatusBadge(activity.status as string)
-                        ) : (
-                          <Badge
-                            variant="outline"
-                            className="bg-primary/5 text-primary/90"
-                          >
-                            Job
-                          </Badge>
-                        )}
                       </div>
                     </div>
                   ))}
