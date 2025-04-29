@@ -17,11 +17,10 @@ export function DashboardLayout() {
 }
 
 function DashboardLayoutSuspense() {
-  const { data: statsData, isLoading: isStatsLoading } =
-    trpc.dashboard.getStats.useQuery();
-  const { data: activityData, isLoading: isActivityLoading } =
+  const { isLoading: isStatsLoading } = trpc.dashboard.getStats.useQuery();
+  const { isLoading: isActivityLoading } =
     trpc.dashboard.getRecentActivity.useQuery();
-  const { data: creditsData, isLoading: isCreditsLoading } =
+  const { isLoading: isCreditsLoading } =
     trpc.credits.getUserCredits.useQuery();
 
   const isLoading = isStatsLoading || isActivityLoading || isCreditsLoading;

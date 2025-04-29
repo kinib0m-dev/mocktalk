@@ -275,3 +275,27 @@ interface ActivityResponse {
   activities?: LoginActivityRecord[];
   message?: string;
 }
+
+type ResourceCategory =
+  | "guides"
+  | "questions"
+  | "frameworks"
+  | "industry"
+  | "career"
+  | "templates";
+
+type ResourceType = "article" | "video" | "guide" | "template";
+
+interface Resource {
+  id: string;
+  title: string;
+  description: string;
+  content: string | null;
+  category: ResourceCategory;
+  type: ResourceType;
+  iconName: string;
+  url: string;
+  isFeatured: boolean | null;
+  createdAt: Date;
+  updatedAt: Date;
+}

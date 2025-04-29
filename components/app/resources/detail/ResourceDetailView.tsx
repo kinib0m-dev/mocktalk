@@ -15,9 +15,9 @@ import { ResourceCard } from "../ResourcesCard";
 import remarkGfm from "remark-gfm";
 
 interface ResourceDetailViewProps {
-  resource: any; // Using any for now, but should be properly typed
+  resource: Resource;
   tags: string[];
-  relatedResources: any[]; // Using any for now, but should be properly typed
+  relatedResources: Resource[];
 }
 
 export function ResourceDetailView({
