@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 200" fill="none">
+  <!-- Gradient Definitions -->
+  <defs>
+    <linearGradient id="grad1" x1="30" y1="30" x2="130" y2="130" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="white"/> <!-- primary -->
+      <stop offset="1" stop-color="white"/> <!-- chart-1 approximation -->
+    </linearGradient>
+  </defs>
+  
+  <!-- Logo Mark (Left Side) -->
+  <g transform="translate(20, 40) scale(0.6)">
+      <!-- Speech Bubble -->
+    <path d="M40 60 Q40 30 100 30 Q160 30 160 60 Q160 110 100 110 Q75 110 55 140 L55 105" 
+        fill="url(#grad1)" stroke="black" stroke-width="5" stroke-linejoin="round"/>
+    
+    <!-- Sound Waves Inside -->
+    <line x1="70" y1="75" x2="90" y2="75" stroke="black" stroke-width="5" stroke-linecap="round"/>
+    <line x1="95" y1="60" x2="115" y2="90" stroke="black" stroke-width="5" stroke-linecap="round"/>
+    <line x1="125" y1="55" x2="135" y2="95" stroke="black" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  
+
+  <!-- Text "MockTalk" -->
+  <g transform="translate(150, 0)">
+    <!-- Mock part -->
+    <text x="0" y="110" font-family="Arial, sans-serif" font-weight="600" font-size="56" fill="#262626">Mock</text>
+    
+    <!-- Talk part -->
+    <text x="135" y="110" font-family="Arial, sans-serif" font-weight="700" font-size="56" fill="#262626">Talk</text>
+  </g>
+</svg>
