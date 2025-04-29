@@ -5,8 +5,8 @@ export default async function ResourceDetailPage({
   params,
   searchParams,
 }: {
-  params: { slug: string };
-  searchParams: { id?: string };
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ id?: string }>;
 }) {
   const { slug } = await params;
   const { id } = await searchParams;
