@@ -19,21 +19,34 @@ const sourceSans3 = Source_Sans_3({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://domain"),
+  metadataBase: new URL("https://mocktalk.dev"),
   title: {
     default: "MockTalk",
     template: `%s | MockTalk`,
   },
-  description: "Description",
-  keywords: [],
+  description:
+    "MockTalk is an AI-powered interview simulation platform designed for students and recent graduates to practice for job interviews, receive personalized feedback, and enhance their interview performance with detailed insights.",
+  keywords: [
+    "AI job interview simulator",
+    "mock interview",
+    "interview practice",
+    "job interview preparation",
+    "AI feedback",
+    "career coaching",
+    "resume enhancement",
+    "job interview questions",
+    "interview skills",
+    "student career tools",
+  ],
   icons: {
     icon: "/icon.svg",
   },
   openGraph: {
     title: "MockTalk",
-    description: "Description",
+    description:
+      "MockTalk is an AI-powered interview simulation platform designed for students and recent graduates to practice for job interviews, receive personalized feedback, and enhance their interview performance with detailed insights.",
     images: [""],
-    url: "https://domain",
+    url: "https://mocktalk.dev",
     siteName: "MockTalk",
   },
 };

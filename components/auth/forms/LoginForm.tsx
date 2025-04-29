@@ -56,7 +56,6 @@ export function LoginForm() {
           }
         }
       })
-      .catch(() => toast.error("Something went wrong!"))
       .finally(() => setIsPending(false));
   };
 

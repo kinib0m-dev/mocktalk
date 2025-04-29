@@ -20,6 +20,28 @@ export const authRoutes = [
 ];
 
 /**
+ * An array of routes that are used after authentication.
+ * @type {string[]}
+ */
+export const privateRoutes = [
+  "/analytics",
+  "/dashboard",
+  "/interviews",
+  "/interviews/[id]",
+  "/interviews/[id]/feedback",
+  "/interviews/[id]/practice",
+  "/jobs",
+  "/jobs/new",
+  "/jobs/[id]",
+  "/jobs/[id]/edit",
+  "/jobs/[id]/interview",
+  "/profile",
+  "/resources",
+  "/resources/[slug]",
+  "/settings",
+];
+
+/**
  * The prefix for authentication routes.
  * Routes that start with this prefix are used for API authentication purposes and trpc.
  * @type {string}
