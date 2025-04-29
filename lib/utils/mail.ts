@@ -173,7 +173,7 @@ export async function sendVerificationEmail(email: string, token: string) {
   const confirmLink = `${path}/new-verification?token=${token}`;
 
   await resend.emails.send({
-    from: "onboarding@resend.dev",
+    from: "mocktalk.dev",
     to: email,
     subject: "Verify your MockTalk account",
     html: emailTemplate(
@@ -190,7 +190,7 @@ export async function sendResetPasswordEmail(email: string, token: string) {
   const resetLink = `${path}/new-password?token=${token}`;
 
   await resend.emails.send({
-    from: "onboarding@resend.dev",
+    from: "mocktalk.dev",
     to: email,
     subject: "Reset your MockTalk password",
     html: emailTemplate(
@@ -206,7 +206,7 @@ export async function sendResetPasswordEmail(email: string, token: string) {
 
 export async function sendTwoFactorTokenEmail(email: string, token: string) {
   await resend.emails.send({
-    from: "onboarding@resend.dev",
+    from: "mocktalk.dev",
     to: email,
     subject: "Your MockTalk verification code",
     html: emailTemplate(
