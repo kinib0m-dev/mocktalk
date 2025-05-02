@@ -14,158 +14,125 @@ const emailTemplate = (
   buttonLink?: string
 ) => {
   return `
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>${title} | MockTalk</title>
-      <style>
-        :root {
-          --primary: #0090ff;
-          --primary-dark: #0072cc;
-          --background: #ffffff;
-          --foreground: #111827;
-          --muted: #f3f4f6;
-          --muted-foreground: #6b7280;
-          --border: #e5e7eb;
-          --card: #ffffff;
-          --card-foreground: #111827;
-        }
-        
-        body {
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-          line-height: 1.6;
-          color: var(--foreground);
-          background-color: #f8f9fa;
-          margin: 0;
-          padding: 0;
-        }
-        
-        .email-container {
-          max-width: 600px;
-          margin: 24px auto;
-          background-color: var(--background);
-          border: 1px solid var(--border);
-          border-radius: 12px;
-          overflow: hidden;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-        
-        .email-header {
-          padding: 24px;
-          text-align: center;
-          background-color: var(--background);
-          border-bottom: 1px solid var(--border);
-        }
-        
-        .logo {
-          height: 40px;
-        }
-        
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>${title} | MockTalk</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #f0f2f5;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        color: #111827;
+      }
+
+      .email-container {
+        max-width: 600px;
+        margin: 40px auto;
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+      }
+
+      .email-header {
+        background-color: #ffffff;
+        padding: 24px;
+        text-align: center;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      .email-header img {
+        height: 40px;
+      }
+
+      .email-body {
+        padding: 32px 24px;
+      }
+
+      .email-heading {
+        font-size: 22px;
+        font-weight: 600;
+        margin-bottom: 16px;
+      }
+
+      .email-content {
+        font-size: 16px;
+        line-height: 1.5;
+        margin-bottom: 24px;
+      }
+
+      .email-button {
+        display: inline-block;
+        padding: 12px 20px;
+        background-color: #0090ff;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 16px;
+      }
+
+      .email-button:hover {
+        background-color: #0072cc;
+      }
+
+      .email-footer {
+        background-color: #f9fafb;
+        color: #6b7280;
+        text-align: center;
+        font-size: 13px;
+        padding: 24px;
+        border-top: 1px solid #e5e7eb;
+      }
+
+      .footer-links a {
+        color: #6b7280;
+        margin: 0 6px;
+        text-decoration: underline;
+      }
+
+      @media (max-width: 600px) {
         .email-body {
-          padding: 32px 24px;
-          color: var(--foreground);
+          padding: 24px 16px;
         }
-        
-        .email-heading {
-          font-size: 24px;
-          font-weight: 600;
-          margin-bottom: 16px;
-          color: var(--foreground);
-        }
-        
-        .email-content {
-          font-size: 16px;
-          margin-bottom: 24px;
-          color: var(--foreground);
-        }
-        
         .email-button {
-          display: inline-block;
-          background-color: var(--primary);
-          color: white;
-          font-weight: 500;
-          font-size: 16px;
-          padding: 12px 24px;
-          text-decoration: none;
-          border-radius: 6px;
-          margin-top: 16px;
-          transition: background-color 0.2s ease;
-        }
-        
-        .email-button:hover {
-          background-color: var(--primary-dark);
-        }
-        
-        .email-code {
-          display: inline-block;
-          font-family: monospace;
-          background-color: var(--muted);
-          border-radius: 6px;
-          padding: 16px 24px;
-          font-size: 24px;
-          font-weight: 600;
-          letter-spacing: 2px;
-          margin: 16px 0;
-          color: var(--primary);
-          border: 1px solid var(--border);
-        }
-        
-        .email-footer {
-          background-color: var(--muted);
-          padding: 24px;
+          display: block;
+          width: 100%;
           text-align: center;
-          color: var(--muted-foreground);
-          font-size: 14px;
-          border-top: 1px solid var(--border);
         }
-        
-        .footer-links {
-          margin-bottom: 12px;
-        }
-        
-        .footer-links a {
-          color: var(--muted-foreground);
-          text-decoration: underline;
-          margin: 0 8px;
-        }
-        
-        @media screen and (max-width: 600px) {
-          .email-container {
-            width: 100%;
-            margin: 0;
-            border-radius: 0;
-          }
-        }
-      </style>
-    </head>
-    <body>
-      <div class="email-container">
-        <div class="email-header">
-          <img src="${path}/icons/logo-full.svg" alt="MockTalk" class="logo" />
-        </div>
-        <div class="email-body">
-          <h1 class="email-heading">${title}</h1>
-          <div class="email-content">${content}</div>
-          ${
-            buttonText && buttonLink
-              ? `<a href="${buttonLink}" class="email-button">${buttonText}</a>`
-              : ""
-          }
-        </div>
-        <div class="email-footer">
-          <div class="footer-links">
-            <a href="${path}/help">Help</a>
-            <a href="${path}/privacy">Privacy</a>
-            <a href="${path}/terms">Terms</a>
-          </div>
-          <p>© ${new Date().getFullYear()} MockTalk. All rights reserved.</p>
-          <p>If you did not request this email, please ignore it or <a href="${path}/contact">contact support</a>.</p>
-        </div>
+      }
+    </style>
+  </head>
+  <body>
+    <div class="email-container">
+      <div class="email-header">
+        <img src="https://mocktalk.dev/icons/logo-full.svg" alt="MockTalk" />
       </div>
-    </body>
-    </html>
+      <div class="email-body">
+        <h1 class="email-heading">${title}</h1>
+        <div class="email-content">${content}</div>
+        ${
+          buttonText && buttonLink
+            ? `<a href="${buttonLink}" class="email-button">${buttonText}</a>`
+            : ""
+        }
+      </div>
+      <div class="email-footer">
+        <div class="footer-links">
+          <a href="${path}/help">Help</a> |
+          <a href="${path}/privacy">Privacy</a> |
+          <a href="${path}/terms">Terms</a>
+        </div>
+        <p>© ${new Date().getFullYear()} MockTalk. All rights reserved.</p>
+        <p>If you didn’t request this email, please ignore it or <a href="${path}/contact">contact support</a>.</p>
+      </div>
+    </div>
+  </body>
+  </html>
   `;
 };
 

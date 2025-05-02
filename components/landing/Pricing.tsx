@@ -27,8 +27,8 @@ export function Pricing() {
   const isPaidInView = useInView(paidRef, { once: true, amount: 0.2 });
 
   const freeTier = {
-    name: "Free to Start",
-    description: "Perfect for first-time users to try the core experience.",
+    name: "Launchpad",
+    description: "Perfect for anyone to try the core experience.",
     features: [
       { text: "3 AI Interview Questions" },
       { text: "1 Resume Enhancement" },
@@ -43,18 +43,33 @@ export function Pricing() {
 
   const packs = [
     {
-      name: "Starter Pack",
-      icon: "💼",
-      badge: "Most Popular",
-      description: "Best for quick prep before an interview.",
+      name: "KickStart",
+      icon: "🚀",
+      badge: "First Timer",
+      description: "Ideal for first-timers and light users.",
       price: "$6",
       features: [
-        { text: "10 Interview Questions" },
-        { text: "+2 Bonus Questions", isBonus: true },
+        { text: "5 Interview Questions" },
         {
-          text: "2 Resume Enhancements",
-          tooltip: "1 included per 5 questions purchased",
+          text: "1 Resume Enhancement",
+          tooltip: "Included at a rate of 1 per 5 questions purchased",
         },
+        { text: "Performance Reports & Learning Hub Access" },
+      ],
+      cta: "Get Pack",
+      ctaLink: "/billing",
+      highlight: false,
+    },
+    {
+      name: "Momentum",
+      icon: "💪",
+      badge: "Most Popular",
+      description: "Designed for moderate users with regular practice needs.",
+      price: "$12",
+      features: [
+        { text: "10 Interview Questions" },
+        { text: "2 Resume Enhancements" },
+        { text: "Full Progress Tracking" },
         { text: "Performance Reports & Learning Hub Access" },
       ],
       cta: "Get Pack",
@@ -62,38 +77,52 @@ export function Pricing() {
       highlight: true,
     },
     {
-      name: "Booster Pack",
-      icon: "🚀",
+      name: "Accelerator",
+      icon: "⚡",
       badge: "Best Value",
-      description: "Designed for weekly practice and in-depth growth.",
-      price: "$12",
+      description: "Perfect for power users preparing deeply for interviews.",
+      price: "$22",
       features: [
-        { text: "25 Interview Questions" },
-        { text: "+5 Bonus Questions", isBonus: true },
-        { text: "6 Resume Enhancements" },
-        { text: "Full Progress Tracking" },
-      ],
-      cta: "Get Pack",
-      ctaLink: "/billing",
-      highlight: false,
-    },
-    {
-      name: "Pro Pack",
-      icon: "🧠",
-      badge: "Most Complete",
-      description:
-        "Perfect for serious job seekers aiming to master their interview skills.",
-      price: "$24",
-      features: [
-        { text: "60 Interview Questions" },
-        { text: "+12 Bonus Questions", isBonus: true },
-        { text: "13 Resume Enhancements" },
+        { text: "20 Interview Questions" },
+        { text: "4 Resume Enhancements" },
         { text: "Advanced Feedback Reports" },
         { text: "Priority Support" },
       ],
       cta: "Get Pack",
       ctaLink: "/billing",
       highlight: false,
+    },
+    {
+      name: "Summit",
+      icon: "🏔️",
+      badge: "Most Complete",
+      description: "For heavy users and those receiving career coaching.",
+      price: "$40",
+      features: [
+        { text: "40 Interview Questions" },
+        { text: "8 Resume Enhancements" },
+        { text: "Advanced Feedback Reports" },
+        { text: "Premium Priority Support" },
+        { text: "Exclusive Content Access" },
+      ],
+      cta: "Get Pack",
+      ctaLink: "/billing",
+      highlight: false,
+    },
+  ];
+
+  const resumeEnhancers = [
+    {
+      amount: 1,
+      price: "$2",
+    },
+    {
+      amount: 4,
+      price: "$7",
+    },
+    {
+      amount: 10,
+      price: "$14",
     },
   ];
 
@@ -137,7 +166,7 @@ export function Pricing() {
             }
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            Buy Credits as You Need Them
+            Choose the Plan That Works for You
           </motion.h2>
           <motion.p
             className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10"
@@ -202,7 +231,7 @@ export function Pricing() {
         {/* Question Packs */}
         <motion.div
           ref={paidRef}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
           variants={containerVariants}
           initial="hidden"
           animate={isPaidInView ? "visible" : "hidden"}
@@ -249,32 +278,17 @@ export function Pricing() {
                     <ul className="space-y-3">
                       {pack.features.map((feature, idx) => (
                         <li key={idx} className="flex items-start">
-                          <div className="mr-3 mt-1">
-                            <Check
-                              className={`h-4 w-4 ${feature.isBonus ? "text-amber-500" : "text-green-500"}`}
-                            />
-                          </div>
-                          <div className="flex items-center">
-                            <span
-                              className={
-                                feature.isBonus
-                                  ? "font-medium text-amber-600 dark:text-amber-400"
-                                  : ""
-                              }
-                            >
-                              {feature.text}
-                            </span>
-                            {feature.tooltip && (
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <HelpCircle className="h-3.5 w-3.5 ml-1 text-muted-foreground cursor-help" />
-                                </TooltipTrigger>
-                                <TooltipContent className="max-w-xs">
-                                  <p>{feature.tooltip}</p>
-                                </TooltipContent>
-                              </Tooltip>
-                            )}
-                          </div>
+                          <span>{feature.text}</span>
+                          {feature.tooltip && (
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <HelpCircle className="h-3.5 w-3.5 ml-1 text-muted-foreground cursor-help" />
+                              </TooltipTrigger>
+                              <TooltipContent className="max-w-xs">
+                                <p>{feature.tooltip}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          )}
                         </li>
                       ))}
                     </ul>
@@ -309,20 +323,31 @@ export function Pricing() {
               <div className="flex items-center gap-2 mb-2">
                 <FileText className="h-5 w-5 text-primary" />
                 <h3 className="text-xl font-bold">
-                  Resume Enhancer – $1.49 each
+                  Additional Resume Enhancers
                 </h3>
               </div>
               <p className="text-muted-foreground mb-3">
-                Buy additional resume improvements anytime.
+                Buy additional resume enhancers anytime. Choose from these
+                bundles:
               </p>
+              <div className="flex flex-wrap gap-4 mb-4">
+                {resumeEnhancers.map((bundle, idx) => (
+                  <div
+                    key={idx}
+                    className="bg-white dark:bg-slate-800 rounded-lg px-4 py-2 border border-border"
+                  >
+                    <span className="font-bold text-lg">{bundle.price}</span>
+                    <span className="text-muted-foreground block text-sm">
+                      {bundle.amount}{" "}
+                      {bundle.amount === 1 ? "Enhancer" : "Enhancers"}
+                    </span>
+                  </div>
+                ))}
+              </div>
               <ul className="space-y-1">
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-green-500" />
                   <span>AI-Optimized Resume</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-green-500" />
-                  <span>Downloadable</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <Check className="h-4 w-4 text-green-500" />
@@ -331,8 +356,8 @@ export function Pricing() {
               </ul>
             </div>
             <Button size="lg" className="md:w-auto w-full" asChild>
-              <Link href="/resume-enhancer">
-                Buy Resume Enhancer
+              <Link href="/billing">
+                Buy Resume Enhancers
                 <ShoppingCart className="ml-2 h-4 w-4" />
               </Link>
             </Button>

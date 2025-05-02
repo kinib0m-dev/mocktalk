@@ -1,15 +1,24 @@
 import { db } from "@/db";
-import { userQuestionCredits } from "@/db/schema";
+import { resumeEnhancerCredits, userQuestionCredits } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 export async function getUserCredits(userId: string) {
-  const [credits] = await db
+  const [questionCredits] = await db
     .select()
     .from(userQuestionCredits)
     .where(eq(userQuestionCredits.userId, userId))
     .limit(1);
 
-  if (!credits) {
+  const [resumeCredits] = await db
+    .select()
+    .from(resumeEnhancerCredits)
+    .where(eq(resumeEnhancerCredits.userId, userId))
+    .limit(1);
+
+  let finalQuestionCredits = questionCredits;
+  let finalResumeCredits = resumeCredits;
+
+  if (!finalQuestionCredits) {
     // Create initial credits if not exists
     const [newCredits] = await db
       .insert(userQuestionCredits)
@@ -19,10 +28,31 @@ export async function getUserCredits(userId: string) {
         totalQuestionsUsed: 0,
       })
       .returning();
-    return newCredits;
+    finalQuestionCredits = newCredits;
   }
 
-  return credits;
+  if (!finalResumeCredits) {
+    // Create initial credits if not exists
+    const [newCredits] = await db
+      .insert(resumeEnhancerCredits)
+      .values({
+        userId,
+        remainingCredits: 1, // Start with 1 free
+        totalCreditsUsed: 0,
+      })
+      .returning();
+    finalResumeCredits = newCredits;
+  }
+
+  // Return combined credits
+  return {
+    remainingQuestions: finalQuestionCredits.remainingQuestions,
+    totalQuestionsUsed: finalQuestionCredits.totalQuestionsUsed,
+    resumeCredits: finalResumeCredits.remainingCredits,
+    totalResumeCreditsUsed: finalResumeCredits.totalCreditsUsed,
+    lastQuestionCreditUpdate: finalQuestionCredits.lastCreditUpdate,
+    lastResumeCreditUpdate: finalResumeCredits.lastCreditUpdate,
+  };
 }
 
 export async function deductQuestionCredits(userId: string, count: number) {
@@ -55,6 +85,41 @@ export async function addQuestionCredits(userId: string, count: number) {
       lastCreditUpdate: new Date(),
     })
     .where(eq(userQuestionCredits.userId, userId))
+    .returning();
+
+  return updatedCredits;
+}
+
+export async function deductResumeCredits(userId: string, count: number) {
+  const credits = await getUserCredits(userId);
+
+  if (credits.resumeCredits < count) {
+    throw new Error("Not enough resume enhancer credits");
+  }
+
+  const [updatedCredits] = await db
+    .update(resumeEnhancerCredits)
+    .set({
+      remainingCredits: credits.resumeCredits - count,
+      totalCreditsUsed: credits.totalResumeCreditsUsed + count,
+      lastCreditUpdate: new Date(),
+    })
+    .where(eq(resumeEnhancerCredits.userId, userId))
+    .returning();
+
+  return updatedCredits;
+}
+
+export async function addResumeCredits(userId: string, count: number) {
+  const credits = await getUserCredits(userId);
+
+  const [updatedCredits] = await db
+    .update(resumeEnhancerCredits)
+    .set({
+      remainingCredits: credits.resumeCredits + count,
+      lastCreditUpdate: new Date(),
+    })
+    .where(eq(resumeEnhancerCredits.userId, userId))
     .returning();
 
   return updatedCredits;

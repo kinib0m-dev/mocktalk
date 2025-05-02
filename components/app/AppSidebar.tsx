@@ -25,6 +25,7 @@ import {
   LogOut,
   User,
   ChevronRight,
+  BanknoteArrowUp,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -162,6 +163,22 @@ export function AppSidebar({ name, image, email }: AppSidebarProps) {
               <Link href="/resources">
                 <BookOpen />
                 <span>Resources</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              className={cn({
+                "bg-primary/90 text-background px-2 py-1 rounded-lg hover:bg-primary/90 hover:text-background":
+                  isActiveRoute("/billing"),
+              })}
+              tooltip="Billing"
+            >
+              <Link href="/billing">
+                <BanknoteArrowUp />
+                <span>Billing</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

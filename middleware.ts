@@ -19,6 +19,10 @@ export default auth((req) => {
   // Add check for tRPC routes to be bypassed from authentication
   const isTrpcRoute = nextUrl.pathname.startsWith("/api/trpc");
 
+  if (req.nextUrl.pathname.includes("/api/webhooks/stripe")) {
+    return NextResponse.next();
+  }
+
   if (
     isApiAuthRoute ||
     isTrpcRoute ||

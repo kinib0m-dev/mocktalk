@@ -299,3 +299,38 @@ interface Resource {
   createdAt: Date;
   updatedAt: Date;
 }
+
+// Payment types
+interface QuestionPackage {
+  id: string;
+  name: string;
+  description: string;
+  amount: number;
+  credits: number;
+  resumeEnhancements: number;
+  idealFor: string;
+}
+
+interface ResumePackage {
+  id: string;
+  name: string;
+  description: string;
+  amount: number;
+  count: number;
+}
+
+type PackageType = "question" | "resume";
+
+interface PaymentRecord {
+  id: string;
+  userId: string;
+  stripeSessionId: string;
+  stripeCustomerId: string;
+  amount: number;
+  currency: string;
+  priceId: string;
+  questionCreditsAdded: number;
+  resumeCreditsAdded: number;
+  status: string;
+  createdAt: Date;
+}

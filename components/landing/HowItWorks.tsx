@@ -1,15 +1,22 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
 import { motion, useInView } from "framer-motion";
-import { FileText, BarChart, Briefcase, MessageSquare } from "lucide-react";
+import {
+  FileText,
+  BarChart,
+  Briefcase,
+  MessageSquare,
+  CheckCircle,
+  Target,
+  PenTool,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
 export function HowItWorks() {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
   const { data: session } = useSession();
   const isAuthenticated = !!session?.user;
@@ -21,7 +28,13 @@ export function HowItWorks() {
       description:
         "Start by pasting a job description to tailor your practice interview to the specific role you're applying for.",
       color: "bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400",
-      image: "/images/step-1.png",
+      benefits: [
+        "Custom questions based on job requirements",
+        "Industry-specific focus",
+        "Targeted skill assessment",
+      ],
+      accent: "border-blue-400 dark:border-blue-600",
+      iconBg: "bg-blue-500 dark:bg-blue-700",
     },
     {
       icon: <FileText className="h-6 w-6" />,
@@ -30,7 +43,13 @@ export function HowItWorks() {
         "MockTalk analyzes the job requirements and creates a personalized interview with relevant questions for your target role.",
       color:
         "bg-purple-100 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400",
-      image: "/images/step-2.png",
+      benefits: [
+        "AI-powered question generation",
+        "Role-appropriate difficulty level",
+        "Covers key skills from the job post",
+      ],
+      accent: "border-purple-400 dark:border-purple-600",
+      iconBg: "bg-purple-500 dark:bg-purple-700",
     },
     {
       icon: <MessageSquare className="h-6 w-6" />,
@@ -39,7 +58,13 @@ export function HowItWorks() {
         "Engage in realistic voice interviews with our AI interviewer that adapts to your responses and asks follow-up questions.",
       color:
         "bg-amber-100 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400",
-      image: "/images/step-3.png",
+      benefits: [
+        "Real-time conversation flow",
+        "Voice recognition technology",
+        "Natural follow-up questions",
+      ],
+      accent: "border-amber-400 dark:border-amber-600",
+      iconBg: "bg-amber-500 dark:bg-amber-700",
     },
     {
       icon: <BarChart className="h-6 w-6" />,
@@ -48,7 +73,13 @@ export function HowItWorks() {
         "Receive comprehensive feedback on your performance, including strengths, areas for improvement, and specific suggestions.",
       color:
         "bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400",
-      image: "/images/step-4.png",
+      benefits: [
+        "Personalized improvement suggestions",
+        "Performance analytics dashboard",
+        "Compare progress over time",
+      ],
+      accent: "border-green-400 dark:border-green-600",
+      iconBg: "bg-green-500 dark:bg-green-700",
     },
   ];
 
@@ -77,32 +108,6 @@ export function HowItWorks() {
       id="how-it-works"
       className="py-24 bg-gradient-to-b from-slate-50 to-white dark:from-slate-900/30 dark:to-slate-900/10 relative overflow-hidden"
     >
-      {/* Decorative elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-primary/5"
-            style={{
-              width: Math.random() * 200 + 50,
-              height: Math.random() * 200 + 50,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              x: [0, Math.random() * 50 - 25],
-              y: [0, Math.random() * 50 - 25],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 10,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut",
-            }}
-          />
-        ))}
-      </div>
-
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section header */}
         <div className="text-center mb-20">
@@ -136,91 +141,114 @@ export function HowItWorks() {
         {/* Process steps */}
         <div ref={ref} className="relative">
           {/* Steps connector line */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-primary/30 via-primary/50 to-primary/20 hidden md:block"></div>
+          <div className="absolute left-[28px] sm:left-1/2 sm:-translate-x-1/2 top-8 bottom-8 w-1 sm:w-px bg-gradient-to-b from-primary/30 via-primary/50 to-primary/20"></div>
 
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
-            className="space-y-24 md:space-y-32 relative z-10"
+            className="space-y-16 sm:space-y-24 relative z-10"
           >
             {steps.map((step, index) => (
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className={`md:grid md:grid-cols-2 gap-12 items-center ${index % 2 === 1 ? "md:rtl" : ""}`}
+                className="flex flex-col sm:flex-row items-start gap-8"
               >
-                {/* Text Content */}
-                <div
-                  className={`${index % 2 === 1 ? "md:text-right" : ""} md:ltr space-y-4`}
-                >
-                  <div className="flex items-center mb-6 md:justify-start">
-                    <div
-                      className={`p-4 rounded-full ${step.color} mr-4 flex items-center justify-center shadow-sm`}
-                    >
-                      {step.icon}
-                    </div>
-                    <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground font-bold shadow-md">
-                      {index + 1}
-                    </div>
+                {/* Step Number with Icon */}
+                <div className="flex-shrink-0 relative z-10">
+                  <div
+                    className={`w-14 h-14 rounded-full flex items-center justify-center text-white ${step.iconBg}`}
+                  >
+                    {step.icon}
                   </div>
-                  <h3 className="text-2xl font-bold">{step.title}</h3>
-                  <p className="text-muted-foreground text-lg">
-                    {step.description}
-                  </p>
+                  <div className="absolute top-0 left-0 w-full h-full rounded-full bg-white dark:bg-slate-800 -z-10 opacity-20 blur-[10px]"></div>
                 </div>
 
-                {/* Image/Visual */}
-                <motion.div
-                  className="mt-8 md:mt-0 relative"
-                  whileHover={{ scale: 1.03 }}
-                  transition={{ duration: 0.2 }}
+                {/* Step Content Card */}
+                <div
+                  className={`flex-1 bg-white dark:bg-slate-800/60 backdrop-blur-sm rounded-xl p-6 shadow-lg border-l-4 ${step.accent}`}
                 >
-                  <div className="aspect-video bg-white dark:bg-slate-800 rounded-xl shadow-lg overflow-hidden border border-border/50 relative">
-                    <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent z-0" />
-                    <Image
-                      src={step.image}
-                      alt={step.title}
-                      width={600}
-                      height={350}
-                      className="w-full h-full object-cover z-10 relative"
-                    />
+                  <h3 className="text-2xl font-bold mb-3">{step.title}</h3>
+                  <p className="text-muted-foreground mb-5">
+                    {step.description}
+                  </p>
+
+                  {/* Key Benefits */}
+                  <div className="bg-slate-50 dark:bg-slate-800/80 rounded-lg p-4">
+                    <h4 className="font-semibold text-sm uppercase text-slate-500 dark:text-slate-400 mb-3">
+                      Key Benefits
+                    </h4>
+                    <ul className="space-y-2">
+                      {step.benefits.map((benefit, idx) => (
+                        <li key={idx} className="flex items-start">
+                          <CheckCircle className="h-5 w-5 text-green-500 mr-2 flex-shrink-0 mt-0.5" />
+                          <span>{benefit}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
 
-                  {/* Animation dots at corners */}
-                  <motion.div
-                    className="absolute -bottom-3 -left-3 w-6 h-6 rounded-full bg-primary"
-                    animate={{
-                      scale: [1, 1.2, 1],
-                      opacity: [0.7, 1, 0.7],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      delay: index * 0.5,
-                    }}
-                  />
-                  <motion.div
-                    className="absolute -top-3 -right-3 w-6 h-6 rounded-full bg-primary"
-                    animate={{
-                      scale: [1, 1.2, 1],
-                      opacity: [0.7, 1, 0.7],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      delay: index * 0.5 + 1.5,
-                    }}
-                  />
-                </motion.div>
+                  {/* Step Number Indicator */}
+                  <div className="absolute top-6 right-6 w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                    <span className="font-bold text-primary">{index + 1}</span>
+                  </div>
+
+                  {/* Visual Decorator Element */}
+                  <div
+                    className={`absolute -bottom-2 -right-2 w-16 h-16 rounded-full ${step.color} opacity-20 blur-xl`}
+                  ></div>
+                </div>
               </motion.div>
             ))}
           </motion.div>
         </div>
 
+        {/* Results Section */}
+        <motion.div
+          className="mt-20 bg-primary/5 border border-primary/20 rounded-xl p-8 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+        >
+          <h3 className="text-2xl font-bold mb-4">
+            The Results You&apos;ll Achieve
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-white dark:bg-slate-800/60 p-5 rounded-lg shadow-sm flex flex-col items-center">
+              <div className="p-3 rounded-full bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 mb-3">
+                <Target className="h-6 w-6" />
+              </div>
+              <h4 className="font-bold mb-1">Confidence Boost</h4>
+              <p className="text-sm text-muted-foreground">
+                Enter interviews with proven preparation and performance
+                insights
+              </p>
+            </div>
+            <div className="bg-white dark:bg-slate-800/60 p-5 rounded-lg shadow-sm flex flex-col items-center">
+              <div className="p-3 rounded-full bg-amber-100 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 mb-3">
+                <PenTool className="h-6 w-6" />
+              </div>
+              <h4 className="font-bold mb-1">Communication Skills</h4>
+              <p className="text-sm text-muted-foreground">
+                Develop clear, concise answers that highlight your strengths
+              </p>
+            </div>
+            <div className="bg-white dark:bg-slate-800/60 p-5 rounded-lg shadow-sm flex flex-col items-center">
+              <div className="p-3 rounded-full bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400 mb-3">
+                <CheckCircle className="h-6 w-6" />
+              </div>
+              <h4 className="font-bold mb-1">Job Offer Success</h4>
+              <p className="text-sm text-muted-foreground">
+                Dramatically increase your chances of landing your dream job
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
         {/* CTA Button */}
         <motion.div
-          className="mt-20 text-center"
+          className="mt-12 text-center"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5, delay: 0.8 }}

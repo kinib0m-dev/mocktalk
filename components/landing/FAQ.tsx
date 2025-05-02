@@ -226,7 +226,7 @@ export function FAQ() {
             assistance with any questions not covered in our FAQ.
           </p>
           <Button asChild>
-            <Link href="/contact">
+            <Link href="mailto:info@mocktalk.com">
               <Mail className="mr-2 h-4 w-4" />
               Contact Support
             </Link>

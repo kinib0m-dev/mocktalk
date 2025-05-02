@@ -323,6 +323,38 @@ export const userQuestionCredits = pgTable("user_question_credits", {
   lastCreditUpdate: timestamp("last_credit_update").defaultNow().notNull(),
 });
 
+// Resume enhancer credits
+export const resumeEnhancerCredits = pgTable("resume_enhancer_credits", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  remainingCredits: integer("remaining_credits").notNull().default(1), // One for free
+  totalCreditsUsed: integer("total_credits_used").notNull().default(0),
+  lastCreditUpdate: timestamp("last_credit_update").defaultNow().notNull(),
+});
+
+// Payment history
+export const paymentHistory = pgTable("payment_history", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  stripeSessionId: text("stripe_session_id").notNull(),
+  stripeCustomerId: text("stripe_customer_id").notNull(),
+  amount: real("amount").notNull(),
+  currency: text("currency").notNull().default("usd"),
+  priceId: text("price_id").notNull(),
+  questionCreditsAdded: integer("question_credits_added").notNull().default(0),
+  resumeCreditsAdded: integer("resume_credits_added").notNull().default(0),
+  status: text("status").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 // ------------------------------------ RESOURCES ------------------------------------
 
 // Resource related types

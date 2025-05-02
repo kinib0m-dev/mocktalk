@@ -36,6 +36,16 @@ export const newPasswordSchema = z.object({
     }),
 });
 
+// Schema for delete account form
+export const deleteAccountSchema = z.object({
+  password: z.string().min(1, { message: "Password is required" }),
+  confirmation: z.literal("DELETE", {
+    message: "Please type DELETE to confirm",
+  }),
+});
+
+export type DeleteAccountFormValues = z.infer<typeof deleteAccountSchema>;
+
 // --------------------------------- MOCKTALK ---------------------------------
 
 // Enum schemas
