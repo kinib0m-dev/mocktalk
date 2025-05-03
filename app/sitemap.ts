@@ -13,7 +13,14 @@ export default async function sitemap() {
   const resourceSlugs = await getAllResourceSlugs();
 
   // Static routes
-  const publicRoutes = ["/", "/new-verification", "/too-fast", "/blog"];
+  const publicRoutes = [
+    "/",
+    "/new-verification",
+    "/too-fast",
+    "/blog",
+    "/terms",
+    "/privacy",
+  ];
 
   const authRoutes = [
     "/login",
@@ -28,9 +35,7 @@ export default async function sitemap() {
   // Dynamic routes
   const dynamicInterviewRoutes = interviewIds.map((id) => `/interviews/${id}`);
   const dynamicJobRoutes = jobIds.map((id) => `/jobs/${id}`);
-  const dynamicResourceRoutes = resourceSlugs.map(
-    (slug) => `/resources/${slug}`
-  );
+  const dynamicResourceRoutes = resourceSlugs.map((slug) => `${slug}`);
 
   // Combine all URLs
   const allUrls = [
