@@ -30,6 +30,81 @@ export async function createFeedbackAction(params: CreateFeedbackParams) {
       participantCount: 2, // Default is interviewer + candidate
     });
 
+    // Check if transcript has any user messages
+    const userRoles = ["user", "candidate", "interviewee"];
+    const hasUserMessages = transcript.some((message) =>
+      userRoles.includes(message.role.toLowerCase())
+    );
+
+    if (!hasUserMessages) {
+      // No user messages found, create default feedback with 0 scores
+      // Update interview status to completed with 0 score
+      await db
+        .update(interviews)
+        .set({
+          status: "completed",
+          completedAt: new Date(),
+          overallScore: 0,
+        })
+        .where(eq(interviews.id, interviewId));
+
+      // Insert overall interview feedback explaining the situation
+      const [feedback] = await db
+        .insert(interviewFeedback)
+        .values({
+          interviewId,
+          overallFeedback:
+            "The interview was not completed. There were no responses from the candidate.",
+          generalStrengths: [],
+          generalImprovements: [
+            "The candidate did not provide any responses during the interview.",
+          ],
+        })
+        .returning();
+
+      // Insert default metric scores with 0 values
+      const metrics: EvaluationMetric[] = [
+        "communication_skills",
+        "technical_knowledge",
+        "problem_solving",
+        "cultural_role_fit",
+        "confidence_clarity",
+      ];
+
+      for (const metric of metrics) {
+        await db.insert(metricScores).values({
+          interviewId,
+          metric: metric,
+          score: 0,
+          strengths: [],
+          improvements: ["No response provided by the candidate."],
+          feedback: "Unable to evaluate as no response was provided.",
+        });
+      }
+
+      // Insert default question feedback
+      for (const question of questions) {
+        await db.insert(questionFeedback).values({
+          questionId: question.id,
+          interviewId,
+          score: 0,
+          feedback: "No response was provided for this question.",
+          strengths: [],
+          improvements: [
+            "Candidate did not provide a response to this question.",
+          ],
+          relevanceScore: 0,
+          completenessScore: 0,
+        });
+      }
+
+      return {
+        success: true,
+        feedbackId: feedback.id,
+      };
+    }
+
+    // If we reach here, there are user messages, so continue with AI feedback generation
     // Format transcript for AI processing
     const formattedTranscript = transcript
       .map(
