@@ -15,7 +15,7 @@ export const registerSchema = z.object({
     .regex(/[a-z]/, { message: "At least one lowercase letter required" })
     .regex(/[A-Z]/, { message: "At least one uppercase letter required" })
     .regex(/[0-9]/, { message: "At least one number required" })
-    .regex(/[!@#$%^&*-_]/, {
+    .regex(/(?=.*[!@#$%*^&*\-_])/, {
       message: "At least one special character required",
     }),
 });
@@ -31,7 +31,7 @@ export const newPasswordSchema = z.object({
     .regex(/[a-z]/, { message: "At least one lowercase letter required" })
     .regex(/[A-Z]/, { message: "At least one uppercase letter required" })
     .regex(/[0-9]/, { message: "At least one number required" })
-    .regex(/[!@#$%^&*-_]/, {
+    .regex(/(?=.*[!@#$%*^&*\-_])/, {
       message: "At least one special character required",
     }),
 });
