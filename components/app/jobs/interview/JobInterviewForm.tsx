@@ -251,7 +251,7 @@ export function JobInterviewForm({ job }: JobInterviewFormProps) {
                         {questionCount - (credits.remainingQuestions || 0)} more
                         question credits to generate this interview.
                         <Button variant="outline" asChild className="ml-2 mt-2">
-                          <Link href="/pricing">Buy Questions</Link>
+                          <Link href="/billing">Buy Questions</Link>
                         </Button>
                       </AlertDescription>
                     </Alert>

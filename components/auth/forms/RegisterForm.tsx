@@ -62,7 +62,7 @@ export function RegisterForm() {
     const lower = /(?=.*[a-z])/;
     const upper = /(?=.*[A-Z])/;
     const number = /(?=.*[0-9])/;
-    const special = /(?=.*[!@#$%*^&*])/;
+    const special = /(?=.*[!@#$%*^&*-_])/;
     const length = /.{8,}/;
 
     setLowerValidated(lower.test(password));
