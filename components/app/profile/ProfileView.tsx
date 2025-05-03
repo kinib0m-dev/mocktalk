@@ -361,12 +361,18 @@ export function ProfileView() {
                           : credits?.totalQuestionsUsed || 0}
                       </span>
                     </div>
-                    {credits?.lastCreditUpdate && (
+                    {(credits?.lastQuestionCreditUpdate ||
+                      credits?.lastResumeCreditUpdate) && (
                       <div className="flex justify-between items-center text-sm text-muted-foreground">
                         <span>Last Updated</span>
                         <span>
                           {format(
-                            new Date(credits.lastCreditUpdate),
+                            new Date(
+                              new Date(credits?.lastQuestionCreditUpdate || 0) >
+                              new Date(credits?.lastResumeCreditUpdate || 0)
+                                ? credits.lastQuestionCreditUpdate
+                                : credits.lastResumeCreditUpdate
+                            ),
                             "MMM d, yyyy"
                           )}
                         </span>
