@@ -5,18 +5,59 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       {
-        userAgent: "*",
-        allow: ["/", "/new-verification", "/too-fast", "/blog"], // Allow essential pages
+        userAgent: "Googlebot",
+        allow: ["/", "/blog", "/resources"],
         disallow: [
-          "/login", // Login should not be indexed
-          "/register", // Registration page should not be indexed
-          "/error", // Error page should not be indexed
-          "/reset", // Password reset page should not be indexed
-          "/new-password", // New password page should not be indexed
-          "/api/", // Block API routes from being indexed
+          "/api/",
+          "/login",
+          "/register",
+          "/reset",
+          "/new-password",
+          "/error",
+          "/new-verification",
+          "/too-fast",
+          "/*?id=*", // Block URLs with query parameters
+        ],
+      },
+      {
+        userAgent: "Bingbot",
+        allow: ["/", "/blog", "/resources"],
+        disallow: [
+          "/api/",
+          "/login",
+          "/register",
+          "/reset",
+          "/new-password",
+          "/error",
+          "/new-verification",
+          "/too-fast",
+          "/*?id=*", // Block URLs with query parameters
+        ],
+      },
+      {
+        userAgent: "*",
+        allow: ["/", "/blog", "/resources", "/terms", "/privacy"],
+        disallow: [
+          "/api/",
+          "/login",
+          "/register",
+          "/reset",
+          "/new-password",
+          "/error",
+          "/new-verification",
+          "/too-fast",
+          "/dashboard",
+          "/jobs",
+          "/interviews",
+          "/analytics",
+          "/settings",
+          "/profile",
+          "/billing",
+          "/*?id=*", // Block URLs with query parameters
         ],
       },
     ],
     sitemap: `${baseUrl}/sitemap.xml`,
+    host: baseUrl,
   };
 }
