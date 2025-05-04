@@ -12,9 +12,6 @@ import {
 // Set edge runtime to bypass some Next.js middleware
 export const runtime = "edge";
 
-// Disable body parsing as we need the raw body for signature verification
-export const bodyParser = false;
-
 // Record a payment in payment history
 async function recordPaymentTransaction(
   userId: string,
@@ -64,10 +61,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       );
     }
 
-    // Log request details for debugging
-    console.log(`Webhook path: ${req.nextUrl.pathname}`);
-    console.log(`Signature: ${signature.substring(0, 10)}...`);
-
     // Verify webhook signature from Stripe
     let event: Stripe.Event;
     try {
@@ -80,8 +73,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         signature,
         process.env.STRIPE_WEBHOOK_SECRET
       );
-
-      console.log(`Webhook verified, event type: ${event.type}`);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Unknown error";
       console.error(`Webhook signature verification failed: ${errorMessage}`);
