@@ -89,6 +89,7 @@ function applySecurityHeaders() {
 }
 
 // Optionally, don't invoke Middleware on some paths
+// In middleware.ts
 export const config = {
   matcher: [
     "/((?!.+\\.[\\w]+$|_next).*)",

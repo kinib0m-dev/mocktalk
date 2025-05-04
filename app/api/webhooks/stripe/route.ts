@@ -12,6 +12,9 @@ import {
 // Set edge runtime to bypass some Next.js middleware
 export const runtime = "edge";
 
+// Disable body parsing as we need the raw body for signature verification
+export const bodyParser = false;
+
 // Record a payment in payment history
 async function recordPaymentTransaction(
   userId: string,
@@ -49,7 +52,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   console.log("Stripe webhook received");
 
   try {
-    // Use the raw body directly from the request
     const body = await req.text();
     const headersList = await headers();
     const signature = headersList.get("stripe-signature");
