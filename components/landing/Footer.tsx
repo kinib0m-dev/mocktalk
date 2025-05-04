@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { cloneElement, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { ChevronRight, Linkedin, Instagram } from "lucide-react";
+import { ChevronRight, Linkedin } from "lucide-react";
 
 export function Footer() {
   const ref = useRef(null);
@@ -32,8 +32,11 @@ export function Footer() {
   };
 
   const socialLinks = [
-    { name: "LinkedIn", icon: <Linkedin />, href: "https://linkedin.com" },
-    { name: "Instagram", icon: <Instagram />, href: "https://instagram.com" },
+    {
+      name: "LinkedIn",
+      icon: <Linkedin />,
+      href: "https://linkedin.com/company/mocktalkdev",
+    },
   ];
 
   const containerVariants = {

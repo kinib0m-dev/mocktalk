@@ -10,6 +10,12 @@ import {
   addResumeCredits,
 } from "@/lib/auth/helpers/credits";
 
+// Set edge runtime to bypass some Next.js middleware
+export const runtime = "edge";
+
+// Disable body parsing as we need the raw body for signature verification
+export const bodyParser = false;
+
 // Record a payment in payment history
 async function recordPaymentTransaction(
   userId: string,
@@ -44,6 +50,8 @@ async function recordPaymentTransaction(
 
 // Webhook POST handler
 export async function POST(req: NextRequest): Promise<NextResponse> {
+  console.log("Stripe webhook received");
+
   try {
     const body = await req.text();
     const headersList = await headers();
@@ -57,6 +65,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       );
     }
 
+    // Log request details for debugging
+    console.log(`Webhook path: ${req.nextUrl.pathname}`);
+    console.log(`Signature: ${signature.substring(0, 10)}...`);
+
     // Verify webhook signature from Stripe
     let event: Stripe.Event;
     try {
@@ -69,6 +81,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         signature,
         process.env.STRIPE_WEBHOOK_SECRET
       );
+
+      console.log(`Webhook verified, event type: ${event.type}`);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Unknown error";
       console.error(`Webhook signature verification failed: ${errorMessage}`);
@@ -122,6 +136,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             await addResumeCredits(userId, resumeCredits);
           }
 
+          console.log(
+            `Successfully processed payment_intent.succeeded for user ${userId}`
+          );
           break;
         }
 
@@ -165,6 +182,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
             await addResumeCredits(userId, resumeCredits);
           }
 
+          console.log(
+            `Successfully processed checkout.session.completed for user ${userId}`
+          );
           break;
         }
 
@@ -188,6 +208,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
               0,
               "failed"
             );
+
+            console.log(`Recorded failed payment for user ${userId}`);
           } else {
             console.warn(
               "Missing userId in payment_intent.payment_failed metadata"
@@ -284,7 +306,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     }
 
     // Always return 200 to Stripe to acknowledge receipt
-    return NextResponse.json({ received: true }, { status: 200 });
+    // Make sure there are no redirect headers
+    return NextResponse.json(
+      { received: true },
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   } catch (error) {
     console.error("Unexpected error in webhook handler:", error);
     return NextResponse.json(
