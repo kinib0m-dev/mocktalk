@@ -84,7 +84,7 @@ export const metadata: Metadata = {
     title: "MockTalk - AI-Powered Interview Practice Platform",
     description:
       "Practice for your next job interview with our AI-powered platform. Get personalized feedback and improve your interview skills.",
-    images: ["/images/twitter-image.jpg"],
+    images: ["/icons/logo-full.svg"],
     creator: "@mocktalk",
     site: "@mocktalk",
   },

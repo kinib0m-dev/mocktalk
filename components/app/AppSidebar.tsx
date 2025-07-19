@@ -191,7 +191,12 @@ export function AppSidebar({ name, image, email }: AppSidebarProps) {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="w-full text-left flex items-center gap-2 p-2 rounded-md hover:bg-sidebar-accent">
+              <button
+                className={cn(
+                  "w-full text-left flex items-center gap-2 p-2 rounded-md hover:bg-sidebar-accent",
+                  !open && "justify-center"
+                )}
+              >
                 <Avatar className="h-8 w-8">
                   <AvatarImage src={image || undefined} alt={name || "user"} />
                   <AvatarFallback>{name?.[0]?.toUpperCase()}</AvatarFallback>

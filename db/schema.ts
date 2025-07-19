@@ -10,45 +10,54 @@ import {
   real,
   uniqueIndex,
   jsonb,
+  index,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 
 // ------------------------------------ AUTH ------------------------------------
-export const users = pgTable("users", {
-  id: text("id")
-    .primaryKey()
-    .$defaultFn(() => crypto.randomUUID()),
+export const users = pgTable(
+  "user",
+  {
+    // Auth.js required fields
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    name: text("name"),
+    email: text("email").unique(),
+    emailVerified: timestamp("emailVerified", { mode: "date" }),
+    image: text("image"),
 
-  name: text("name"),
-  email: text("email").unique(),
-  emailVerified: timestamp("email_verified", { mode: "date" }),
-  image: text("image"),
-  password: text("password"),
-  isTwoFactorEnabled: boolean("is_two_factor_enabled").default(false),
+    // Custom fields
+    password: text("password"),
+    isTwoFactorEnabled: boolean("is_two_factor_enabled").default(false),
+    // Account lockout fields
+    failedLoginAttempts: integer("failed_login_attempts").default(0),
+    lastFailedLoginAttempt: timestamp("last_failed_login_attempt", {
+      mode: "date",
+    }),
+    lockedUntil: timestamp("locked_until", { mode: "date" }),
+    // Session revocation field
+    securityVersion: integer("security_version").default(1),
 
-  // Account lockout fields
-  failedLoginAttempts: integer("failed_login_attempts").default(0),
-  lastFailedLoginAttempt: timestamp("last_failed_login_attempt", {
-    mode: "date",
-  }),
-  lockedUntil: timestamp("locked_until", { mode: "date" }),
-
-  // Session revocation field
-  securityVersion: integer("security_version").default(1),
-
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
-
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (table) => ({
+    // Indexes for better query performance
+    emailIdx: index("users_email_idx").on(table.email),
+    createdAtIdx: index("users_created_at_idx").on(table.createdAt),
+    lockedUntilIdx: index("users_locked_until_idx").on(table.lockedUntil),
+  })
+);
 export const accounts = pgTable(
   "account",
   {
-    userId: text("user_id")
+    userId: text("userId")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
     type: text("type").$type<AdapterAccountType>().notNull(),
     provider: text("provider").notNull(),
-    providerAccountId: text("provider_account_id").notNull(),
+    providerAccountId: text("providerAccountId").notNull(),
     refresh_token: text("refresh_token"),
     access_token: text("access_token"),
     expires_at: integer("expires_at"),
@@ -63,8 +72,18 @@ export const accounts = pgTable(
         columns: [account.provider, account.providerAccountId],
       }),
     },
+    // Index for faster user lookups
+    index("accounts_user_id_idx").on(account.userId),
   ]
 );
+
+export const sessions = pgTable("session", {
+  sessionToken: text("sessionToken").primaryKey(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  expires: timestamp("expires", { mode: "date" }).notNull(),
+});
 
 export const verificationTokens = pgTable(
   "verification_token",

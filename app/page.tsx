@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     url: "https://mocktalk.dev",
     images: [
       {
-        url: "/images/interview-dashboard.png",
+        url: "/icons/logo-full.svg",
         width: 1200,
         height: 630,
         alt: "MockTalk Platform Preview",
